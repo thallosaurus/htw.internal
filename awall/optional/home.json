@@ -1,0 +1,33 @@
+{
+    "description": "home network",
+    "policy": [
+        {
+            "in": "LAN",
+            "out": "_fw",
+            "action": "accept"
+        },
+        {
+            "in": "LAN",
+            "out": "WAN",
+            "action": "accept"
+        }
+    ],
+    "filter": [
+        {
+            "in": "LAN",
+            "out": "_fw",
+            "service": [
+                "http",
+                "https",
+                "dns",
+                "dhcp"
+            ],
+            "action": "accept"
+        }
+    ],
+    "snat": [
+        {
+            "out": "WAN"
+        }
+    ]
+}

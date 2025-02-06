@@ -1,0 +1,24 @@
+{
+  "description": "allow inbound",
+  "service": {
+    "pdns-ui": {
+      "proto": "tcp",
+      "port": 8080
+    },
+    "pdns-recursor-ui": {
+      "proto": "tcp",
+      "port": 8081
+    }
+  },
+  "filter": [
+    {
+      "in": "WAN",
+      "out": "_fw",
+      "service": [
+        "pdns-ui",
+        "pdns-recursor-ui"
+      ],
+      "action": "accept"
+    }
+  ]
+}

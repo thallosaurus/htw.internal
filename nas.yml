@@ -1,0 +1,15 @@
+---
+- name: Router Configuration
+  hosts: nas
+  remote_user: root
+
+  tasks:
+    - name: Install Packages
+      community.general.apk:
+        name: vlan,samba
+        state: present
+
+    - name: Install Samba Configuration
+      copy:
+        src:  "{{ playbook_dir }}/samba/smb.conf"
+        dest: "/etc/samba/smb.conf"

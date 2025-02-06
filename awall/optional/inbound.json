@@ -1,0 +1,11 @@
+{
+  "description": "allow inbound",
+  "filter": [
+    {
+      "in": "WAN",
+      "out": "_fw",
+      "service": ["http", "https", "dns"],
+      "action": "accept"
+    }
+  ]
+}

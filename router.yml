@@ -1,0 +1,100 @@
+---
+- name: Router Configuration
+  hosts: router
+  remote_user: root
+
+  tasks:
+  - name: Install Packages
+    community.general.apk:
+      name: vlan,awall,acf-awall,pdns,pdns-backend-sqlite3,pdns-doc,pdns-recursor
+      state: present
+
+- name: DNS Configuration
+  hosts: router
+  remote_user: root
+  tasks:
+  - name: Copy PowerDNS Config
+    copy:
+      src: "{{ playbook_dir }}/dns/pdns.conf"
+      dest: "/etc/pdns/pdns.conf"
+
+  - name: Copy PowerDNS Recursor Config
+    copy:
+      src: "{{ playbook_dir }}/dns/recursor.conf"
+      dest: "/etc/pdns/recursor.conf"
+
+  - name: Copy dnsmasq Config
+    copy:
+      src: "{{ playbook_dir }}/dns/dhcp.conf"
+      dest: "/etc/dnsmasq.d/dhcp.conf"
+
+  - name: Make PowerDNS start on boot
+    ansible.builtin.service:
+      name: pdns
+      enabled: true
+      state: started
+
+  - name: Restart PowerDNS
+    ansible.builtin.service:
+      name: pdns
+      state: restarted
+
+  - name: Make dnsmasq start on boot
+    ansible.builtin.service:
+      name: dnsmasq
+      enabled: true
+      state: started
+
+  - name: Restart dnsmasq
+    ansible.builtin.service:
+      name: dnsmasq
+      state: restarted
+
+  - name: Make PowerDNS Recursor start on boot
+    ansible.builtin.service:
+      name: pdns-recursor
+      enabled: true
+      state: started
+
+  - name: Restart PowerDNS Recursor
+    ansible.builtin.service:
+      name: pdns-recursor
+      state: restarted
+
+- name: Firewall Configuration
+  hosts: router
+  remote_user: root
+  tasks:
+  - name: Install Firewall Rules
+    copy:
+      src:  "{{ playbook_dir }}/awall/optional/{{ item }}"
+      dest: "/etc/awall/optional/{{item}}"
+    with_items:
+      - default.json
+      - ssh.json
+      - ping.json
+      - inbound.json
+      - outbound.json
+      - pdns-ui.json
+      - home.json
+
+  - name: Enable Firewall Rules
+    community.general.awall:
+      name: [default ssh ping inbound outbound pdns-ui home]
+      state: enabled
+
+  - name: Activate currently enabled firewall rules
+    community.general.awall:
+      activate: true
+
+  - name: Make iptables start on boot
+    ansible.builtin.service:
+      name: iptables
+      enabled: true
+      state: started
+
+  - name: Make ip6tables start on boot
+    ansible.builtin.service:
+      name: ip6tables
+      enabled: true
+      state: started

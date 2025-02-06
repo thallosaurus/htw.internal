@@ -1,0 +1,12 @@
+{
+  "description": "allow outbound dns, http/https, ssh, ntp, ssh and ping",
+
+  "filter": [
+    {
+      "in": "_fw",
+      "out": "WAN",
+      "service": ["dns", "http", "https", "ssh", "ntp", "ping", "dhcp"],
+      "action": "accept"
+    }
+  ]
+}

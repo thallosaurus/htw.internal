@@ -1,0 +1,12 @@
+{
+  "description": "default deny all",
+  "zone": {
+    "WAN": { "iface": ["eth0"] },
+    "LAN": { "iface": ["vlan69"] }
+  },
+  "policy": [
+    { "in": "WAN", "action": "accept" },
+    { "in": "LAN", "action": "accept" },
+    { "action": "accept" }
+  ]
+}
