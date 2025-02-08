@@ -6,8 +6,6 @@ terraform {
     key = "tf/state"
 
     region     = "us-east-1"
-    access_key = "XLmOIAFuAmEkSPcK7qRA"
-    secret_key = "IzIt7u7hGmYbGK0hnoIaCaF9MbcuUVrfu0qTMpo9"
 
     force_path_style            = true
     skip_credentials_validation = true # Skip AWS related checks and validations
@@ -35,7 +33,6 @@ terraform {
 
 provider "powerdns" {
   #api_key    = "${var.pdns_api_key}"
-  api_key = "iamarandomkeychangeme"
   #server_url = "${var.pdns_server_url}"
   server_url     = "http://10.0.0.101:8081/"
   insecure_https = true

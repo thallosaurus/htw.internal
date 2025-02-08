@@ -1,0 +1,11 @@
+[Interface]
+PrivateKey = {{ vpn_private_key }}
+Address = 10.7.0.3/32
+#ListenPort = 51821
+
+[Peer]
+PublicKey = {{ vpn_server_public_key }}
+Endpoint =  {{ vpn_endpoint }}
+AllowedIPs = 10.7.0.0/24, 10.1.0.0/16
+#AllowedIPs = 0.0.0.0/0
+PersistentKeepalive = 30

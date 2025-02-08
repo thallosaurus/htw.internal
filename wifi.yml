@@ -1,0 +1,15 @@
+---
+- name: Wifi Configuration
+  hosts: wifi
+  remote_user: root
+
+  tasks:
+  - name: Install Packages
+    template:
+      dest: "/etc/hostapd/small.conf"
+      src: "{{ playbook_dir }}/wifi.conf"
+
+  - name: Restart PowerDNS
+    ansible.builtin.service:
+      name: hostapd
+      state: restarted

@@ -14,8 +14,8 @@
   remote_user: root
   tasks:
   - name: Copy PowerDNS Config
-    copy:
-      src: "{{ playbook_dir }}/dns/pdns.conf"
+    template:
+      src: "{{ playbook_dir }}/dns/pdns.conf.j2"
       dest: "/etc/pdns/pdns.conf"
 
   - name: Copy PowerDNS Recursor Config
@@ -26,7 +26,7 @@
   - name: Copy dnsmasq Config
     copy:
       src: "{{ playbook_dir }}/dns/dhcp.conf"
-      dest: "/etc/dnsmasq.d/dhcp.conf"
+      dest: "/etc/dnsmasq.conf"
 
   - name: Make PowerDNS start on boot
     ansible.builtin.service:
@@ -98,3 +98,18 @@
       name: ip6tables
       enabled: true
       state: started
+
+- name: Setup VPN Connection
+  hosts: router
+  remote_user: root
+  tasks:
+  - name: Copy VPN Config
+    template:
+      src:  "{{ playbook_dir }}/vpn/wg-jones.conf.j2"
+      dest: "/etc/wireguard/wg-jones.conf"
+
+  - name: Restart Wireguard
+    ansible.builtin.service:
+      name: wg-quick.wg-jones
+      enabled: true
+      state: restarted
