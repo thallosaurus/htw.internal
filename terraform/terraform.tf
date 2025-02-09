@@ -38,6 +38,6 @@ provider "powerdns" {
   insecure_https = true
 }
 provider "docker" {
-  host     = "ssh://terraform@apps.htw.internal:22"
+  host     = "ssh://terraform@10.0.0.103:22"
   ssh_opts = ["-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null"]
 }

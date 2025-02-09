@@ -7,7 +7,7 @@
   - name: Install Packages
     template:
       dest: "/etc/hostapd/small.conf"
-      src: "{{ playbook_dir }}/wifi.conf"
+      src: "{{ playbook_dir }}/wifi/wifi.conf"
 
   - name: Restart PowerDNS
     ansible.builtin.service:
